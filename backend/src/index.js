@@ -7,10 +7,12 @@ import songRoutes from "./routes/song.route.js";
 import userRoutes from "./routes/user.route.js";
 import statRoutes from "./routes/stat.route.js";
 import connectDB from "./lib/db.js";
+import { clerkMiddleware } from "@clerk/express";
 
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(clerkMiddleware());
 const PORT = process.env.PORT;
 
 app.use("/api/albums", albumRoutes);
