@@ -8,11 +8,24 @@ import userRoutes from "./routes/user.route.js";
 import statRoutes from "./routes/stat.route.js";
 import connectDB from "./lib/db.js";
 import { clerkMiddleware } from "@clerk/express";
+import fileUpload from "express-fileupload";
+import path from "path";
 
 dotenv.config();
 const app = express();
+const __dirname = path.resolve();
 app.use(express.json());
 app.use(clerkMiddleware());
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: path.join(__dirname, "tmp"),
+    createParentPath: true,
+    limits: {
+      fileSize: 10 * 1024 * 1024, //10Mb max file size
+    },
+  })
+);
 const PORT = process.env.PORT;
 
 app.use("/api/albums", albumRoutes);
